@@ -1,16 +1,37 @@
 import streamlit as st
-import json
 import requests
 
-st.title("Platzi Store API")
+# Page Config
+st.set_page_config(page_title="🛒 Platzi Store", layout="wide")
+
+st.title("🛍️ Platzi Store")
+st.markdown("### Discover Amazing Products ✨")
+
+# Search Bar
+search = st.text_input("🔍 Search Product")
+
 response = requests.get('https://api.escuelajs.co/api/v1/products')
 data_products = response.json()
-for product in data_products:
-    st.subheader(product['title'])
-    st.write(product['description'])
-    st.write(f"Price: ${product['price']}")
-    st.write(f"Category: {product['category']['name']}")
-    st.link_button(f"Source: View Product", product['images'][0])
-    img_url = product['images'][0]
-    if img_url:
-        st.image(img_url, width=300)
+
+# Create 3 columns layout
+cols = st.columns(3)
+
+for index, product in enumerate(data_products):
+    
+    # Search Filter
+    if search.lower() not in product['title'].lower():
+        continue
+
+    with cols[index % 3]:
+        st.markdown("---")
+        
+        st.image(product['images'][0], width="stretch")
+
+        st.subheader(product['title'])
+        
+        st.markdown(f"💲 **Price:** ${product['price']}")  
+        st.markdown(f"🏷️ **Category:** {product['category']['name']}")
+        
+        st.write(product['description'][:100] + "...")
+        
+        st.link_button("🛍️ View Product", product['images'][0])

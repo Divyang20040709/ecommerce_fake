@@ -10,7 +10,7 @@ st.markdown("### Discover Amazing Products ✨")
 # Search Bar
 search = st.text_input("🔍 Search Product")
 
-response = requests.get('https://api.escuelajs.co/api/v1/products')
+response = requests.get('https://fakestoreapi.com/products')
 data_products = response.json()
 
 # Create 3 columns layout
@@ -35,3 +35,4 @@ for index, product in enumerate(data_products):
         st.write(product['description'][:100] + "...")
         
         st.link_button("🛍️ View Product", product['images'][0])
+
